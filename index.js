@@ -13,9 +13,8 @@ new koa()
   .use(koaBody())
   .use(async (ctx) => {
     try {
-      const t = await ctx.request.body;
       const f = (
-      await extractor(t, {
+      await extractor(await ctx.request.body, {
         pooling: "mean",
         normalize: true,
       })
