@@ -12,13 +12,19 @@ const extractor = await pipeline(
 new koa()
   .use(koaBody())
   .use(async (ctx) => {
-    const f = (
+    try {
+      const f = (
       await extractor(await ctx.request.body, {
         pooling: "mean",
         normalize: true,
       })
     ).data;
     ctx.body = ctx.request.headers["b"] ? Buffer.from(f.buffer) : Array.from(f);
+    } catch (e) {
+      console.error('k error', e)
+      ctx.status = 500
+      ctx.body = ''
+    }
   })
   .listen(
     10000,
