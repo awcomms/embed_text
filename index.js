@@ -12,9 +12,8 @@ const extractor = await pipeline(
 new koa()
   .use(koaBody())
   .use(async (ctx) => {
-    const text = await ctx.request.body;
     const f = ((
-      await extractor(text, { pooling: "mean", normalize: true })
+      await extractor(await ctx.request.body, { pooling: "mean", normalize: true })
     ).data);
     ctx.body = ctx.request.headers['b'] ? Buffer.from(f.buffer) : Array.from(f)
   })
