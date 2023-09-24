@@ -1,6 +1,6 @@
 import { pipeline } from "@xenova/transformers";
 import { koaBody } from "koa-body";
-import {Buffer } from 'node:buffer'
+import { Buffer } from "node:buffer";
 import koa from "koa";
 
 const extractor = await pipeline(
@@ -12,10 +12,13 @@ const extractor = await pipeline(
 new koa()
   .use(koaBody())
   .use(async (ctx) => {
-    const f = ((
-      await extractor(await ctx.request.body, { pooling: "mean", normalize: true })
-    ).data);
-    ctx.body = ctx.request.headers['b'] ? Buffer.from(f.buffer) : Array.from(f)
+    const f = (
+      await extractor(await ctx.request.body, {
+        pooling: "mean",
+        normalize: true,
+      })
+    ).data;
+    ctx.body = ctx.request.headers["b"] ? Buffer.from(f.buffer) : Array.from(f);
   })
   .listen(
     10000,
