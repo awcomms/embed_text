@@ -13,9 +13,10 @@ new koa()
   .use(koaBody())
   .use(async (ctx) => {
     const text = await ctx.request.body;
-    ctx.body = Buffer.from((
+    const f = ((
       await extractor(text, { pooling: "mean", normalize: true })
     ).data);
+    ctx.body = ctx.request.headers['b'] ? Buffer.from(f.buffer) : Array.from(f)
   })
   .listen(
     10000,
